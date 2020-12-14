@@ -98,11 +98,22 @@ const tourSchema = new mongoose.Schema({
         //Establish reference to User
         ref: 'User'
       }
-    ]
+    ]    
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 });
+
+//Virtual Populate
+//Keeping a reference to all the child documents on parent documents.
+//But without persisting that information to the database.
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    //Reference to tour field of review model
+    foreignField: 'tour',
+    //What is store in tour field of review model: tour._id
+    localField: '_id'
+})
 
 //Virtual Property
 tourSchema.virtual('durationsWeeks').get(function() {
