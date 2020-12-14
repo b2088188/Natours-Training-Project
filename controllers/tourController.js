@@ -83,7 +83,7 @@ const newTour = await Tour.create(req.body);
              }
         });
 })
-
+ 
 exports.updateTour = catchAsync(async function (req, res, next) {
          const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
             //return new document

@@ -4,7 +4,7 @@
   "description": "Natours Project",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
     "debug": "ndb server.js"
   },
   "author": "",
@@ -25,3 +25,4 @@
     "nodemon": "^2.0.6"
   }
 }
+ 
