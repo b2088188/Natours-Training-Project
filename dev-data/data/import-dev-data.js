@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 
 
 //Read Json File
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 //Import Data Into Database
 async function importData() {
