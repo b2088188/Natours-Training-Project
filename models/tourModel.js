@@ -103,7 +103,7 @@ const tourSchema = new mongoose.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 });
-
+   
 //Virtual Populate
 //Keeping a reference to all the child documents on parent documents.
 //But without persisting that information to the database.

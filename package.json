@@ -2,9 +2,9 @@
   "name": "natours",
   "version": "1.0.0",
   "description": "Natours Project",
-  "main": "server.js",
+  "main": "server1.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "start": "nodemon server1.js",
     "debug": "ndb server.js"
   },
   "author": "",
