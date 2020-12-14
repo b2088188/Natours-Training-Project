@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const User = require('./userModel')
+//const User = require('./userModel')
 
 const tourSchema = new mongoose.Schema({
     name: {
@@ -92,7 +92,13 @@ const tourSchema = new mongoose.Schema({
         day: Number
       }
     ],
-    guides: Array
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        //Establish reference to User
+        ref: 'User'
+      }
+    ]
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
@@ -111,13 +117,13 @@ tourSchema.pre('save', function(next) {
     next();
 });
 
-//Embed user into tour document
-tourSchema.pre('save', async function (next) {
-  //Results is an array of Promise
-  const guidesPromises = this.guides.map(id => User.findById(id))
-  this.guides = await Promise.all(guidesPromises);
-  next();
-});
+//*Embed user into tour document*
+// tourSchema.pre('save', async function (next) {
+//   //Results is an array of Promise
+//   const guidesPromises = this.guides.map(id => User.findById(id))
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 // tourSchema.pre('save', function (next) {
 //   console.log('Will save document...');
@@ -140,6 +146,17 @@ tourSchema.pre(/^find/, function(next) {
     this.find({ secretTour: { $ne: true } });
     this.start = Date.now();
     next();
+})
+
+//Query middleware
+tourSchema.pre(/^find/, function (next) {
+  //fill up guides in model
+  this.populate({
+        path: 'guides',
+        //Exclude property in output
+        select: '-__v -passwordChangedAt'
+    });
+  next();
 })
 //Run after query executed
 tourSchema.post(/^find/, function(docs, next) {
