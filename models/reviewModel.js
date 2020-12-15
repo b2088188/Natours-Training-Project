@@ -32,6 +32,10 @@ const reviewSchema = new mongoose.Schema({
 	toObject: {virtual: true}
 })
  
+ //Compound Indexed, each combination of tour and user has to be unique
+ //Prevent same user do twice review
+reviewSchema.index({tour: 1, user: 1}, {unique: true});
+
 //Query Middleware: Trigger when query starts with find*
 reviewSchema.pre(/^find/, function (next) {
 	// this.populate({
