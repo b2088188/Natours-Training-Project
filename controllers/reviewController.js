@@ -1,7 +1,7 @@
 const Review= require('./../models/reviewModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-
+const {getOne, deleteOne, updateOne, createOne} = require('./handlerFactory');
 
 
 exports.getAllReviews = catchAsync(async function (req, res, next) {   
@@ -33,21 +33,15 @@ exports.getAllReviews = catchAsync(async function (req, res, next) {
 // })
 
 
-
-exports.createReview = catchAsync(async function (req, res, next) {   
-      //Allow nested route
+exports.setTourUserId = (req, res, next) => {
+         //Allow nested route
    if(!req.body.tour)
       req.body.tour = req.params.tourId;
    if(!req.body.user)
       req.body.user = req.user._id;
-const review = await Review.create(req.body);
-   res.status(201).json({
-             status: 'success',
-             data: {
-                review
-             }
-        });
-})
+   next();
+}
+exports.createReview = createOne(Review);
  
 // exports.updateTour = catchAsync(async function (req, res, next) {
 //          const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
@@ -64,6 +58,10 @@ const review = await Review.create(req.body);
 //            }
 //        })
 // })
+
+exports.getReview = getOne(Review);
+exports.deleteReview = deleteOne(Review);
+exports.updateReview = updateOne(Review);
 
 // exports.deleteTour = catchAsync(async function (req, res, next) {   
 //        const tour = await Tour.findByIdAndDelete(req.params.id);
