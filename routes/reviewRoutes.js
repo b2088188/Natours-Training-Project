@@ -1,17 +1,18 @@
 const express = require('express');
-                                                      //Get access to other params of router
-const router = express.Router({mergeParams: true});
-const {getAllReviews, getReview, createReview, deleteReview, updateReview, setTourUserId} = require('../controllers/reviewController');
-const {protect, restrictTo} = require('../controllers/authController');
-  
+//Get access to other params of router
+const router = express.Router({ mergeParams: true });
+const { getAllReviews, getReview, createReview, deleteReview, updateReview, setTourUserId } = require('../controllers/reviewController');
+const { protect, restrictTo } = require('../controllers/authController');
+
+router.use(protect);
 
 router.route('/')
-	       .get(protect, getAllReviews)
-	       .post(protect, restrictTo('user'), setTourUserId, createReview);
+		    .get(getAllReviews)
+		    .post(restrictTo('user'), setTourUserId, createReview);
 
 router.route('/:id').get(getReview)
-                                 .delete(deleteReview)
-                                .patch(updateReview);
+							    .patch(restrictTo('user', 'admin'), updateReview)
+							    .delete(restrictTo('user', 'admin'), deleteReview);
 
 // router.route('/:id')
 // 	        .get(getTour)
@@ -20,4 +21,4 @@ router.route('/:id').get(getReview)
 // 	        .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour)
 
 
-module.exports = router;			        
+module.exports = router;

@@ -14,16 +14,16 @@ router.route('/top-5-cheap')
 router.route('/tour-stats')
            .get(getTourStats)
 router.route('/monthly-plan/:year')
-           .get(getMonthlyPlan)           
+           .get(protect, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan)           
 
 router.route('/')
            //Protected Route MiddleWare
-	       .get(protect, getAllTours)
-	       .post(createTour)
+	       .get(getAllTours)
+	       .post(protect, restrictTo('admin', 'lead-guide'), createTour)
 
 router.route('/:id')
 	        .get(getTour)
-	        .patch(updateTour)
+	        .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
 	                                    // Only Admin and Lead-Guide can delete
 	        .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour)
 

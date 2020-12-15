@@ -1,25 +1,26 @@
 const express = require('express')
 const {getAllUsers, getUser, createUser, updateUser, deleteUser} = require('../controllers/userController');
-const {signup, login, forgotPassword, protect, updatePassword} = require('../controllers/authController');
+const {signup, login, forgotPassword, protect, restrictTo, updatePassword} = require('../controllers/authController');
 const router = express.Router();
 
+
+//Public
 router.post('/signup', signup);
 router.post('/login', login);
-
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', forgotPassword);
 
-router.patch('/updateMyPassword', protect, updatePassword)
-
+//Private
+router.use(protect);
+router.patch('/updateMyPassword', updatePassword)
+//Admin only
+router.use(restrictTo('admin'));
 router.route('/')
 			        .get(getAllUsers)
 			        .post(createUser)
-
 router.route('/:id')       
 			       .get(getUser)
 			       .patch(updateUser) 
 			       .delete(deleteUser)
-
-
 
 module.exports = router;			      
