@@ -48,6 +48,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 	})
 })
 
+exports.getMe = catchAsync(async (req, res, next) => {
+   req.params.id = req.user._id;
+   next();
+});
+
 exports.getUser = getOne(User);
 exports.deleteUser = deleteOne(User);
 exports.updateUser = updateOne(User);
