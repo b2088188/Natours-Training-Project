@@ -1,5 +1,6 @@
 const express = require('express');
-const router = express.Router();
+                                                      //Get access to other params of router
+const router = express.Router({mergeParams: true});
 const {getAllReviews, createReview} = require('../controllers/reviewController');
 const {protect, restrictTo} = require('../controllers/authController');
   
