@@ -115,6 +115,13 @@ tourSchema.virtual('reviews', {
     localField: '_id'
 })
 
+//Indexes: Optimize performance
+//Should use on most search query
+//tourSchema.index({price: 1});
+//Compound Indexes: Optimize for querying price or ratingsAverage or both
+tourSchema.index({price: 1, ratingsAverage: -1});
+tourSchema.index({slug: 1});
+
 //Virtual Property
 tourSchema.virtual('durationsWeeks').get(function() {
     //this point to the current document
