@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express'
 const router = express.Router();
-const {getAllTours, createTour, getTour, updateTour, deleteTour, aliasTopTours, getTourStats, getMonthlyPlan} = require('../controllers/tourController');
-const reviewRouter = require('../routes/reviewRoutes');
-const {protect, restrictTo} = require('../controllers/authController');
+import {getAllTours, createTour, getTour, updateTour, deleteTour, aliasTopTours, getTourStats, getMonthlyPlan} from '../controllers/tourController.js'
+import reviewRouter from '../routes/reviewRoutes.js'
+import {protect, restrictTo} from '../controllers/authController.js'
 //Params Middleware
 //router.param('id', checkId)
 
@@ -29,4 +29,4 @@ router.route('/:id')
 
 // router.route('/:tourId/reviews').post(protect, restrictTo('user'), createReview)
 
-module.exports = router;			        
+export default router;			        

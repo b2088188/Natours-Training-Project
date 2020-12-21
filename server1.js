@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from'mongoose'
 //npm package to set env variables
-const dotenv = require('dotenv');
+import dotenv from'dotenv'
 
 
 
 dotenv.config({path: './config.env'});
-const app = require('./app');
+import app from './app.js';
 const DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
 mongoose.connect(DB, {
 	useNewUrlParser: true,

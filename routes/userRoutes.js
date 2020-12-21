@@ -1,6 +1,6 @@
-const express = require('express')
-const {getAllUsers, getUser, createUser, updateUser, deleteUser, updateMe, getMe} = require('../controllers/userController');
-const {signup, login, forgotPassword, protect, restrictTo, updatePassword} = require('../controllers/authController');
+import express from 'express'
+import {getAllUsers, getUser, createUser, updateUser, deleteUser, updateMe, getMe} from '../controllers/userController.js'
+import {signup, login, forgotPassword, protect, restrictTo, updatePassword} from '../controllers/authController.js'
 const router = express.Router();
 
 
@@ -25,4 +25,4 @@ router.route('/:id')
 			       .patch(updateUser) 
 			       .delete(deleteUser)
 
-module.exports = router;			      
+export default router;			      

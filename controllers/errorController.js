@@ -1,7 +1,7 @@
-const AppError = require('../utils/appError')
+import AppError from '../utils/appError.js'
 
 //Error Handling Middleware
-module.exports = (err, req, res, next) => {	
+const globalErrorHandler = (err, req, res, next) => {	
 	err.statusCode = err.statusCode || 500;
 	err.status = err.status || 'error';
     if(process.env.NODE_ENV === 'development')    	
@@ -15,6 +15,7 @@ module.exports = (err, req, res, next) => {
      	error = handleJWTExpiredError();
 	    sendErrorProd(error, res);    	  
 }
+export default globalErrorHandler;
 
 //Error in Dev mode
 function sendErrorDev(err, res) {

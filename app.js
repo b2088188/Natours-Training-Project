@@ -1,13 +1,19 @@
-const express = require('express');
-const morgan = require('morgan');
+import express from'express'
+import morgan from'morgan'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const AppError = require('./utils/appError')
-const tourRouter = require('./routes/tourRoutes')
-const userRouter = require('./routes/userRoutes')
-const reviewRouter = require('./routes/reviewRoutes');
-const globalErrorHandler = require ('./controllers/errorController')
+import AppError from'./utils/appError.js'
+import tourRouter from'./routes/tourRoutes.js'
+import userRouter from'./routes/userRoutes.js'
+import reviewRouter from'./routes/reviewRoutes.js'
+import globalErrorHandler from './controllers/errorController.js'
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', )
 
 //Middlewares
 if(process.env.NODE_ENV === 'development')
@@ -30,6 +36,6 @@ app.all('*', (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = app;
+export default app;
 
 

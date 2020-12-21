@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Natours Project",
   "main": "server1.js",
+   "type": "module",
   "scripts": {
     "start": "nodemon server1.js",
     "debug": "ndb server.js"

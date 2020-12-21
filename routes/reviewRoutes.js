@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express'
 //Get access to other params of router
 const router = express.Router({ mergeParams: true });
-const { getAllReviews, getReview, createReview, deleteReview, updateReview, setTourUserId } = require('../controllers/reviewController');
-const { protect, restrictTo } = require('../controllers/authController');
+import { getAllReviews, getReview, createReview, deleteReview, updateReview, setTourUserId } from '../controllers/reviewController.js'
+import { protect, restrictTo } from '../controllers/authController.js'
 
 router.use(protect);
 
@@ -21,4 +21,4 @@ router.route('/:id').get(getReview)
 // 	        .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour)
 
 
-module.exports = router;
+export default router;

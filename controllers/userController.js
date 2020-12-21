@@ -1,17 +1,17 @@
-const User = require('../models/userModel');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const {getOne, deleteOne, updateOne} = require('./handlerFactory');
+import User from '../models/userModel.js'
+import catchAsync from '../utils/catchAsync.js'
+import AppError from '../utils/appError.js'
+import {getOne, deleteOne, updateOne} from './handlerFactory.js'
 
 const filterObj = (obj, ...allowedFields) => {
 	return Object.keys(obj).reduce((acc, cur) => {
       if(allowedFields.includes(cur))
-      	acc[cur] = obj[cur];
+      	return {...acc, [cur]: obj[cur]};
       return acc;
 	}, {})
 }
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
+export const getAllUsers = catchAsync(async (req, res, next) => {
 	const users = await User.find();
     res.status(200).json({
     	status: 'success',
@@ -23,14 +23,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 })
 
 
-function createUser(req, res) {
+export const createUser = (req, res) => {
 	res.status(500).json({
 		status: 'error',
 		message: 'This route is not defined, please use signup instead.'
 	})
 }
 
-exports.updateMe = catchAsync(async (req, res, next) => {
+export const updateMe = catchAsync(async (req, res, next) => {
 	// 1) Create error if user POSTs password data
     if(req.body.password || req.body.passwordConfirm)
     	return next(new AppError('This route is not for password updates. Please use /updateMyPassword', 400));
@@ -48,13 +48,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 	})
 })
 
-exports.getMe = catchAsync(async (req, res, next) => {
+export const getMe = catchAsync(async (req, res, next) => {
    req.params.id = req.user._id;
    next();
 });
 
-exports.getUser = getOne(User);
-exports.deleteUser = deleteOne(User);
-exports.updateUser = updateOne(User);
+export const getUser = getOne(User);
+export const deleteUser = deleteOne(User);
+export const updateUser = updateOne(User);
 
-exports.createUser = createUser;

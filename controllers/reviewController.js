@@ -1,10 +1,10 @@
-const Review= require('./../models/reviewModel');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const {getOne, deleteOne, updateOne, createOne} = require('./handlerFactory');
+import Review from './../models/reviewModel.js'
+import catchAsync from '../utils/catchAsync.js'
+import AppError from '../utils/appError.js'
+import {getOne, deleteOne, updateOne, createOne} from './handlerFactory.js'
 
 
-exports.getAllReviews = catchAsync(async function (req, res, next) {   
+export const getAllReviews = catchAsync(async function (req, res, next) {   
    let filter = {};
    if(req.params.tourId)
      filter = {tour: req.params.tourId};
@@ -33,7 +33,7 @@ exports.getAllReviews = catchAsync(async function (req, res, next) {
 // })
 
 
-exports.setTourUserId = (req, res, next) => {
+export const setTourUserId = (req, res, next) => {
          //Allow nested route
    if(!req.body.tour)
       req.body.tour = req.params.tourId;
@@ -41,7 +41,7 @@ exports.setTourUserId = (req, res, next) => {
       req.body.user = req.user._id;
    next();
 }
-exports.createReview = createOne(Review);
+export const createReview = createOne(Review);
  
 // exports.updateTour = catchAsync(async function (req, res, next) {
 //          const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
@@ -59,9 +59,9 @@ exports.createReview = createOne(Review);
 //        })
 // })
 
-exports.getReview = getOne(Review);
-exports.deleteReview = deleteOne(Review);
-exports.updateReview = updateOne(Review);
+export const getReview = getOne(Review);
+export const deleteReview = deleteOne(Review);
+export const updateReview = updateOne(Review);
 
 // exports.deleteTour = catchAsync(async function (req, res, next) {   
 //        const tour = await Tour.findByIdAndDelete(req.params.id);
