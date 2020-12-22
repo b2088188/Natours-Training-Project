@@ -3,6 +3,7 @@ import morgan from'morgan'
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
+import cookieParser from 'cookie-parser';
 
 import AppError from'./utils/appError.js'
 import tourRouter from'./routes/tourRoutes.js'
@@ -13,6 +14,16 @@ import globalErrorHandler from './controllers/errorController.js'
 
 const app = express();
 
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   next();
+// });
+
+// import cors from 'cors';
+// app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
+
 app.set('view engine', 'pug');
 app.set('views', join(__dirname, 'views'));
 
@@ -21,6 +32,7 @@ if(process.env.NODE_ENV === 'development')
 app.use(morgan('dev'));
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static(join(__dirname, 'public')));
 
 
