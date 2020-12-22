@@ -1,12 +1,13 @@
 import express from 'express'
 import {getAllUsers, getUser, createUser, updateUser, deleteUser, updateMe, getMe} from '../controllers/userController.js'
-import {signup, login, forgotPassword, protect, restrictTo, updatePassword} from '../controllers/authController.js'
+import {signup, login, logout, forgotPassword, protect, restrictTo, updatePassword} from '../controllers/authController.js'
 const router = express.Router();
 
 
 //Public
 router.post('/signup', signup);
 router.post('/login', login);
+router.get('/logout', logout);
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', forgotPassword);
 
