@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router();
-import {getAllTours, createTour, getTour, updateTour, deleteTour, aliasTopTours, getTourStats, getMonthlyPlan} from '../controllers/tourController.js'
+import {getAllTours, createTour, getTour, updateTour, deleteTour, aliasTopTours, getTourStats, getMonthlyPlan, uploadTourImages, resizeTourImages} from '../controllers/tourController.js'
 import reviewRouter from '../routes/reviewRoutes.js'
 import {protect, restrictTo} from '../controllers/authController.js'
 //Params Middleware
@@ -23,7 +23,7 @@ router.route('/')
 
 router.route('/:id')
 	        .get(getTour)
-	        .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
+	        .patch(protect, restrictTo('admin', 'lead-guide'), uploadTourImages, resizeTourImages, updateTour)
 	                                    // Only Admin and Lead-Guide can delete
 	        .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour)
 
