@@ -9,6 +9,7 @@ import AppError from'./utils/appError.js'
 import tourRouter from'./routes/tourRoutes.js'
 import userRouter from'./routes/userRoutes.js'
 import reviewRouter from'./routes/reviewRoutes.js'
+import bookingRouter from'./routes/bookingRoutes.js'
 import viewRouter from './routes/viewRoutes.js';
 import globalErrorHandler from './controllers/errorController.js'
 
@@ -42,6 +43,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
 	//Throw Error to Error Middleware
