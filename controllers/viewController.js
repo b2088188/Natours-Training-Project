@@ -32,3 +32,9 @@ export const getLoginForm = (req, res) => {
       title: 'Log into your account'
     })
 }
+
+export const getAccount = (req, res) => {
+  res.status(200).render('account', {
+      title: 'Your account'
+    })
+}
