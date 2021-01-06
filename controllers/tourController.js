@@ -1,10 +1,9 @@
 import multer from 'multer';
 import sharp from 'sharp';
 import Tour from './../models/tourModel.js'
-import APIFeatures from '../utils/apifeatures.js';
 import catchAsync from '../utils/catchAsync.js'
 import AppError from '../utils/appError.js'
-import {getOne, createOne, deleteOne, updateOne} from './handlerFactory.js'
+import {getAll, getOne, createOne, deleteOne, updateOne} from './handlerFactory.js'
 
 const multerStorage = multer.memoryStorage();
 
@@ -56,18 +55,7 @@ export const aliasTopTours = (req, res, next) => {
 
 
 
-export const getAllTours = catchAsync(async (req, res, next) => {
-    const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate(); 
-    const tours = await features.query;
-    res.status(200).json({
-        status: 'success',
-        resutls: tours.length,
-        data: {
-            tours
-        }
-    })
-})
-
+export const getAllTours = getAll(Tour);
 //export const getAllTours = catchAsync(async function (req, res, next) {
     // Two ways to use query
    // 1) Basic query object
@@ -134,15 +122,6 @@ export const createTour = createOne(Tour);
 export const updateTour = updateOne(Tour);
 export const deleteTour = deleteOne(Tour);
 
-// exports.deleteTour = catchAsync(async function (req, res, next) {   
-//        const tour = await Tour.findByIdAndDelete(req.params.id);
-//         if(!tour)
-//           return next(new AppError('No tour found with that ID', 404))
-//        res.status(204).json({
-//          status: 'success',
-//          data: null
-//        });
-// })
 
 //Aggregation Pipeline
 export const getTourStats = catchAsync(async function (req, res, next) {

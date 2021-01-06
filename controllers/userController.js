@@ -3,7 +3,7 @@ import sharp from 'sharp';
 import User from '../models/userModel.js'
 import catchAsync from '../utils/catchAsync.js'
 import AppError from '../utils/appError.js'
-import {getOne, deleteOne, updateOne} from './handlerFactory.js'
+import {getAll, getOne, deleteOne, updateOne} from './handlerFactory.js'
 
 //Save Images in the Disk
 // const multerStorage = multer.diskStorage({
@@ -50,18 +50,6 @@ const filterObj = (obj, ...allowedFields) => {
 	}, {})
 }
 
-export const getAllUsers = catchAsync(async (req, res, next) => {
-	const users = await User.find();
-    res.status(200).json({
-    	status: 'success',
-    	results: users.length,
-    	data: {
-    		users
-    	}
-    })
-})
-
-
 export const createUser = (req, res) => {
 	res.status(500).json({
 		status: 'error',
@@ -94,6 +82,7 @@ export const getMe = catchAsync(async (req, res, next) => {
    next();
 });
 
+export const getAllUsers = getAll(User);
 export const getUser = getOne(User);
 export const deleteUser = deleteOne(User);
 export const updateUser = updateOne(User);

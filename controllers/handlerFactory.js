@@ -1,3 +1,4 @@
+import APIFeatures from '../utils/apifeatures.js';
 import catchAsync  from '../utils/catchAsync.js'
 import AppError  from '../utils/appError.js'
 
@@ -51,4 +52,21 @@ export const getOne = (Model, popOptions) => catchAsync(async function (req, res
                  doc
               }       
          })
+})
+
+export const getAll = Model => catchAsync(async (req, res, next) => {
+    // - For nested GET particular tour's review
+     let filter = {};
+   if(req.params.tourId)
+     filter = {tour: req.params.tourId};
+    // - 
+    const features = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate(); 
+    const doc = await features.query;
+    res.status(200).json({
+        status: 'success',
+        resutls: doc.length,
+        data: {
+            data: doc
+        }
+    })
 })

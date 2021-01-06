@@ -1,23 +1,10 @@
 import Review from './../models/reviewModel.js'
-import catchAsync from '../utils/catchAsync.js'
 import AppError from '../utils/appError.js'
-import {getOne, deleteOne, updateOne, createOne} from './handlerFactory.js'
+import {getAll, getOne, deleteOne, updateOne, createOne} from './handlerFactory.js'
+//import catchAsync from '../utils/catchAsync.js'
 
 
-export const getAllReviews = catchAsync(async function (req, res, next) {   
-   let filter = {};
-   if(req.params.tourId)
-     filter = {tour: req.params.tourId};
-   const reviews = await Review.find(filter);
-
-   res.status(200).json({
-        status: 'success',
-        results: reviews.length,
-        data: { 
-           reviews
-        }
-   });   
-})
+export const getAllReviews = getAll(Review);
 
 // exports.getTour = catchAsync(async function (req, res, next) {
 //        //Tour.findOne({_id: req.params.id})                     
