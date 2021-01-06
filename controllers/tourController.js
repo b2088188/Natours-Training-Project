@@ -1,6 +1,7 @@
 import multer from 'multer';
 import sharp from 'sharp';
 import Tour from './../models/tourModel.js'
+import APIFeatures from '../utils/apifeatures.js';
 import catchAsync from '../utils/catchAsync.js'
 import AppError from '../utils/appError.js'
 import {getOne, createOne, deleteOne, updateOne} from './handlerFactory.js'
@@ -53,55 +54,80 @@ export const aliasTopTours = (req, res, next) => {
    next();
 }
 
-export const getAllTours = catchAsync(async function (req, res, next) {
-   
-   //Build Query
+
+
+export const getAllTours = catchAsync(async (req, res, next) => {
+    const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate(); 
+    const tours = await features.query;
+    res.status(200).json({
+        status: 'success',
+        resutls: tours.length,
+        data: {
+            tours
+        }
+    })
+})
+
+//export const getAllTours = catchAsync(async function (req, res, next) {
+    // Two ways to use query
+   // 1) Basic query object
+   // As soon as using await, the query will execute and come back with the
+   // documents matched query.
+   // const tours = await Tour.find({
+   //  duration: 5,
+   //  difficulty: 'easy'
+   // })
+
+   // 2) Special Mongoose methods
+   // 1 - Build Query
    // 1A) Filtering
-   const queryObj = {...req.query};
-   const excludedFields = ['page', 'sort', 'limit', 'fields'];
-   excludedFields.forEach(el => delete queryObj[el])
+   // const queryObj = {...req.query};
+   // const excludedFields = ['page', 'sort', 'limit', 'fields'];
+   // excludedFields.forEach(el => delete queryObj[el])
    
    // 1B) Advanced Filtering
-   let queryStr = JSON.stringify(queryObj)
-   queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-   //find return a query, so we can continue to use methods to chain
-   let query = Tour.find(JSON.parse(queryStr));
+   // let queryStr = JSON.stringify(queryObj)
+   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`); //return the $ + matched string
+
+   //find return a query, so in Mongoose before using await
+   //we can continue to use some methods to chain this query
+   // let query = Tour.find(JSON.parse(queryStr));
    // 2) Sorting
-   if(req.query.sort)
-      query = query.sort(req.query.sort.split(',').join(' '));
-   else
-      query = query.sort('-createdAt'); //Default: Sort by Created Time
+   // if(req.query.sort)
+   //    query = query.sort(req.query.sort.split(',').join(' '));
+   // else
+   //    query = query.sort('-createdAt'); //Default: Sort by Created Time
    // 3) Field Limiting
-   if(req.query.fields)
-     query = query.select(req.query.fields.split(',').join(' ')); //Include only properties we want
-   else     
-     query = query.select('-__v');   //Default: Exclude __v
+   // if(req.query.fields)
+   //   query = query.select(req.query.fields.split(',').join(' ')); //Include only properties we want
+   // else     
+   //   query = query.select('-__v');   //Default: Exclude __v
 
   // 4) Pagination
   //Ex. page=2&limit=10, skip 10
-    const page = +req.query.page || 1;
-    const limit = +req.query.limit || 100;
-    const skip = (page - 1) * limit;
-    query.skip(skip).limit(limit); 
-    if(req.query.page){
-      const numTours = await Tour.countDocuments(); //Return Number of documents
-      if(skip > numTours)
-         throw new Error('This page does not exist');
-    }
+    // const page = +req.query.page || 1;
+    // const limit = +req.query.limit || 100;
+    // const skip = (page - 1) * limit;
+    // query.skip(skip).limit(limit); 
+    // if(req.query.page){
+    //   const numTours = await Tour.countDocuments(); //Return Number of documents
+    //   if(skip > numTours)
+    //      throw new Error('This page does not exist');
+    // }
     
-   //Execute Query
+   // 2 - Execute Chained Query
    //query.sort().select().skip().limit()
-   const tours = await query;
+   // const tours = await query;
    // const tours = await Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
-   //Send Response
-   res.status(200).json({
-        status: 'success',
-        results: tours.length,
-        data: { 
-           tours
-        }
-   });   
-})
+   // 3 - Send Response
+//    res.status(200).json({
+//         status: 'success',
+//         results: tours.length,
+//         data: { 
+//            tours
+//         }
+//    });   
+// })
 
 export const getTour = getOne(Tour, {path: 'reviews'});
 export const createTour = createOne(Tour);
