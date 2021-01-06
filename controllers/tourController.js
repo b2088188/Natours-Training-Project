@@ -19,6 +19,7 @@ const upload = multer({
     fileFilter: multerFilter
 });
 
+
 export const uploadTourImages = upload.fields([
    {
     name: 'imageCover',
@@ -31,6 +32,8 @@ export const uploadTourImages = upload.fields([
 ])
 
 export const resizeTourImages = catchAsync(async (req, res, next) => {
+    if(!req.files)
+        return next();
     if(!req.files.imageCover || !req.files.images)
         return next();
     // 1) Processing cover image
